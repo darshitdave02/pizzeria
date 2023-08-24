@@ -159,7 +159,7 @@ def orderCreate(request):
         order.save()
         
         serializer = OrderSerializer(order)  # Serialize the created order
-        # update_order_status.delay(order.id, order.created_at)  # Start the task
+        update_order_status.delay(order.id, order.created_at)  # Start the task
         # return render(request, 'order_create.html', {'order': order})
         return JsonResponse({'order': serializer.data})
     except Exception as e:
