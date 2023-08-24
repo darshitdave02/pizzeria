@@ -1,4 +1,3 @@
-<!-- templates/pizzeria/index.html -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,77 +28,110 @@
     </ul>
 
     <h2>Create an Order:</h2>
-    <form action="{% url 'order-create' %}" method="POST">
+    <form id="order-form">
       {% csrf_token %}
-      <label for="cheese">Select Cheese:</label>
-      <select name="cheese" id="cheese">
-        {% for cheese in cheeses %}
-        <option value="{{ cheese.id }}">{{ cheese.name }}</option>
-        {% endfor %}</select
-      ><br /><br />
 
-      <label for="pizza_base">Select Pizza Crust:</label>
-      <select name="pizza_base" id="pizza_base">
-        {% for pizza_base in pizza_bases %}
-        <option value="{{ pizza_base.id }}">{{ pizza_base.name }}</option>
-        {% endfor %}</select
-      ><br /><br />
+      <div id="pizza-container">
+        <div class="pizza-item">
+          <h3>Pizza 1</h3>
+          <label for="cheese">Select Cheese:</label>
+          <select name="cheese">
+            {% for cheese in cheeses %}
+            <option value="{{ cheese.id }}">{{ cheese.name }}</option>
+            {% endfor %}</select
+          ><br /><br />
 
-      <label for="toppings"
-        >Select Toppings (Hold Ctrl/Cmd to select multiple):</label
-      >
-      <select name="toppings" id="toppings" multiple>
-        {% for topping in toppings %}
-        <option value="{{ topping.id }}">{{ topping.name }}</option>
-        {% endfor %}</select
-      ><br /><br /><script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const form = document.getElementById("order-form");
-          const submitButton = document.getElementById("submit-button");
-  
-          submitButton.addEventListener("click", function () {
-            const formData = {
-              cheese: document.getElementById("cheese").value,
-              pizza_base: document.getElementById("pizza_base").value,
-              toppings: Array.from(document.getElementById("toppings").options)
-                .filter((option) => option.selected)
-                .map((option) => option.value),
-            };
-  
-            fetch('{% url "order-create" %}', {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": "{{ csrf_token }}",
-              },
-              body: JSON.stringify(formData),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data);
-                // Handle response data here
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-                // Handle error here
-              });
-          });
-        });
-      </script>
-      <button type="submit">Place Order</button>
+          <label for="pizza_base">Select Pizza Crust:</label>
+          <select name="pizza_base">
+            {% for pizza_base in pizza_bases %}
+            <option value="{{ pizza_base.id }}">{{ pizza_base.name }}</option>
+            {% endfor %}</select
+          ><br /><br />
+
+          <label for="toppings"
+            >Select Toppings (Hold Ctrl/Cmd to select multiple):</label
+          >
+          <select name="toppings" multiple>
+            {% for topping in toppings %}
+            <option value="{{ topping.id }}">{{ topping.name }}</option>
+            {% endfor %}</select
+          ><br /><br />
+
+          <label for="quantity">Quantity:</label>
+          <input type="number" name="quantity" value="1" /><br /><br />
+        </div>
+      </div>
+
+      <button id="add-pizza-button" type="button">Add Pizza</button>
+      <button id="submit-button" type="button">Place Order</button>
     </form>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("order-form");
+        const addPizzaButton = document.getElementById("add-pizza-button");
         const submitButton = document.getElementById("submit-button");
+        const pizzaContainer = document.getElementById("pizza-container");
+
+        let pizzaCount = 1;
+
+        addPizzaButton.addEventListener("click", function () {
+          pizzaCount++;
+
+          const newPizzaItem = document.createElement("div");
+          newPizzaItem.className = "pizza-item";
+          newPizzaItem.innerHTML = `
+                    <h3>Pizza ${pizzaCount}</h3>
+                    <label for="cheese">Select Cheese:</label>
+                    <select name="cheese">
+                        {% for cheese in cheeses %}
+                        <option value="{{ cheese.id }}">{{ cheese.name }}</option>
+                        {% endfor %}
+                    </select><br><br>
+            
+                    <label for="pizza_base">Select Pizza Crust:</label>
+                    <select name="pizza_base">
+                        {% for pizza_base in pizza_bases %}
+                        <option value="{{ pizza_base.id }}">{{ pizza_base.name }}</option>
+                        {% endfor %}
+                    </select><br><br>
+            
+                    <label for="toppings">Select Toppings (Hold Ctrl/Cmd to select multiple):</label>
+                    <select name="toppings" multiple>
+                        {% for topping in toppings %}
+                        <option value="{{ topping.id }}">{{ topping.name }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                    
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" value="1"><br><br>
+                `;
+
+          pizzaContainer.appendChild(newPizzaItem);
+        });
 
         submitButton.addEventListener("click", function () {
+          const pizzas = [];
+
+          document.querySelectorAll(".pizza-item").forEach((item) => {
+            const pizza = {
+              cheese: item.querySelector("select[name='cheese']").value,
+              pizza_base: item.querySelector("select[name='pizza_base']").value,
+              toppings: Array.from(
+                item.querySelector("select[name='toppings']").options
+              )
+                .filter((option) => option.selected)
+                .map((option) => option.value),
+              quantity: parseInt(
+                item.querySelector("input[name='quantity']").value
+              ),
+            };
+
+            pizzas.push(pizza);
+          });
+
           const formData = {
-            cheese: document.getElementById("cheese").value,
-            pizza_base: document.getElementById("pizza_base").value,
-            toppings: Array.from(document.getElementById("toppings").options)
-              .filter((option) => option.selected)
-              .map((option) => option.value),
+            pizzas: pizzas,
           };
 
           fetch('{% url "order-create" %}', {
@@ -109,12 +141,15 @@
               "X-CSRFToken": "{{ csrf_token }}",
             },
             body: JSON.stringify(formData),
-          })
-            .then((response) => response.json())
+          }).then((response) => response.json())
             .then((data) => {
-              console.log(data);
-              // Handle response data here
-            })
+              console.log("Success:", data);
+              // Handle data here
+              
+             window.location.href = "showOrder/" + data.order.id;
+             }) 
+            
+            
             .catch((error) => {
               console.error("Error:", error);
               // Handle error here

@@ -11,6 +11,7 @@ urlpatterns = [
     path('pizzaBase', views.pizzaBaseList, name='pizzaBase-list'),
     path('toppings', views.toppingList, name='topping-list'),
     path('createOrder', views.orderCreate, name='order-create'),
+    path('showOrder/<int:order_id>', views.orderShow, name='order-show'),
     path('status/<int:order_id>', views.orderStatus, name='order-status'),
 
 ]
