@@ -10,6 +10,7 @@ from .models import Order, PizzaBase, Cheese, Topping, Pizza
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import schema
+from django.http import QueryDict
 
 
 def index(request):
@@ -94,10 +95,17 @@ def toppingList(request):
 @api_view(['POST'])
 def orderCreate(request):
     try:
+        topping_ids = []
+        
+        try:
+            topping_ids = request.data.getlist('toppings')
+        except:
+            topping_ids = request.data.get('toppings', [])
+
 
         pizza_base_id = request.data.get('pizza_base')
         cheese_id = request.data.get('cheese')
-        topping_ids = request.data.getlist('toppings')
+
         
         # Check if required data is provided
         if pizza_base_id is None or cheese_id is None or not topping_ids:
