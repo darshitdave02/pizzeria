@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+
+from orderApis.tasks import update_order_status
 from .serializers import OrderSerializer, PizzaBaseSerializer, CheeseSerializer, ToppingSerializer, PizzaSerializer
 from .models import Order, PizzaBase, Cheese, Topping, Pizza
 from drf_yasg import openapi
@@ -99,6 +101,7 @@ def orderCreate(request):
     order.save()
     
     serializer = OrderSerializer(order)  # Serialize the created order
+    update_order_status.delay(order.id, order.created_at)  # Start the task
     return Response({'message': 'Order created successfully', 'order': serializer.data}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
