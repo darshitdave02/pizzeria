@@ -26,12 +26,12 @@ To get started with the app using Docker, follow the steps below:
 
 4. Once the containers are up and running, you can access the app using the following URLs:
 
-   - HomePage: [http://localhost:8000](http://localhost:8000)
-   - ApiDocumentation: [http://localhost:8000/swagger](http://localhost:8000/swagger)
+   - HomePage: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+   - ApiDocumentation: [http://127.0.0.1:8000/swagger](http://127.0.0.1:8000/swagger)
 
    The server runs on port 8000.
 
-5. You can now interact with the app through your web browser. The client interface should be accessible at [http://localhost:8000](http://localhost:8000).
+5. You can now interact with the app through your web browser. The client interface should be accessible at [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
 6. To stop the app and shut down the Docker containers, press `Ctrl + C` in the terminal or command prompt where you started the containers. Docker will gracefully stop the containers and clean up the resources.
 
