@@ -39,7 +39,7 @@ To get started with the app using Docker, follow the steps below:
 
 ### HomePage
 
-![HomePage](./screenshots/1.png)
+![HomePage](./screenshots/5.png)
 ![HomePage](./screenshots/2.png)
 
 ### ApiDocumentation
