@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#x9zk#5e9sme61di*dq7!-3en$ag#2d(@z+7v4kj7a8ef+rk2i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -83,8 +83,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # MySQL
         'NAME': 'pizzeria', # Database name
         'USER': 'root', # Database user
-        'PASSWORD': '', # Database password
-        'HOST': 'localhost', # Database host
+        'PASSWORD': 'root', # Database password
+        'HOST': 'mysql', # Database host
         'PORT': '3306', # Database port
         
     }
