@@ -1,0 +1,13 @@
+<!-- templates/pizzeria/order_create.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Placed</title>
+</head>
+<body>
+    <h1>Your order has been placed!</h1>
+    <p>Order ID: {{ order.id }}</p>
+    <p>Total Price: ${{ order.total_price }}</p>
+    <a href="/swagger">Click here to go to API Documentation</a>
+</body>
+</html>

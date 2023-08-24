@@ -1,0 +1,126 @@
+<!-- templates/pizzeria/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Pizzeria</title>
+  </head>
+  <body>
+    <h1>Welcome to Pizzeria!</h1>
+
+    <h2>Cheese Options:</h2>
+    <ul>
+      {% for cheese in cheeses %}
+      <li>{{ cheese.name }} - ${{ cheese.price }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Pizza Crust Options:</h2>
+    <ul>
+      {% for pizza_base in pizza_bases %}
+      <li>{{ pizza_base.name }} - ${{ pizza_base.price }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Topping Options:</h2>
+    <ul>
+      {% for topping in toppings %}
+      <li>{{ topping.name }} - ${{ topping.price }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Create an Order:</h2>
+    <form action="{% url 'order-create' %}" method="POST">
+      {% csrf_token %}
+      <label for="cheese">Select Cheese:</label>
+      <select name="cheese" id="cheese">
+        {% for cheese in cheeses %}
+        <option value="{{ cheese.id }}">{{ cheese.name }}</option>
+        {% endfor %}</select
+      ><br /><br />
+
+      <label for="pizza_base">Select Pizza Crust:</label>
+      <select name="pizza_base" id="pizza_base">
+        {% for pizza_base in pizza_bases %}
+        <option value="{{ pizza_base.id }}">{{ pizza_base.name }}</option>
+        {% endfor %}</select
+      ><br /><br />
+
+      <label for="toppings"
+        >Select Toppings (Hold Ctrl/Cmd to select multiple):</label
+      >
+      <select name="toppings" id="toppings" multiple>
+        {% for topping in toppings %}
+        <option value="{{ topping.id }}">{{ topping.name }}</option>
+        {% endfor %}</select
+      ><br /><br /><script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const form = document.getElementById("order-form");
+          const submitButton = document.getElementById("submit-button");
+  
+          submitButton.addEventListener("click", function () {
+            const formData = {
+              cheese: document.getElementById("cheese").value,
+              pizza_base: document.getElementById("pizza_base").value,
+              toppings: Array.from(document.getElementById("toppings").options)
+                .filter((option) => option.selected)
+                .map((option) => option.value),
+            };
+  
+            fetch('{% url "order-create" %}', {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+              },
+              body: JSON.stringify(formData),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                // Handle response data here
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                // Handle error here
+              });
+          });
+        });
+      </script>
+      <button type="submit">Place Order</button>
+    </form>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("order-form");
+        const submitButton = document.getElementById("submit-button");
+
+        submitButton.addEventListener("click", function () {
+          const formData = {
+            cheese: document.getElementById("cheese").value,
+            pizza_base: document.getElementById("pizza_base").value,
+            toppings: Array.from(document.getElementById("toppings").options)
+              .filter((option) => option.selected)
+              .map((option) => option.value),
+          };
+
+          fetch('{% url "order-create" %}', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              // Handle response data here
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle error here
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

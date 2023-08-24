@@ -1,14 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from orderApis.tasks import update_order_status
 from .serializers import OrderSerializer, PizzaBaseSerializer, CheeseSerializer, ToppingSerializer, PizzaSerializer
 from .models import Order, PizzaBase, Cheese, Topping, Pizza
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import schema
+
+
+def index(request):
+    cheeses = Cheese.objects.all()
+    pizza_bases = PizzaBase.objects.all()
+    toppings = Topping.objects.all()
+    
+    context = {
+
+        'cheeses': cheeses,
+        'pizza_bases': pizza_bases,
+        'toppings': toppings,
+    }
+    return render(request, 'index.html', context)
 
 
 @api_view(['GET'])
@@ -79,9 +94,10 @@ def toppingList(request):
 @api_view(['POST'])
 def orderCreate(request):
     try:
+
         pizza_base_id = request.data.get('pizza_base')
         cheese_id = request.data.get('cheese')
-        topping_ids = request.data.get('toppings', [])
+        topping_ids = request.data.getlist('toppings')
         
         # Check if required data is provided
         if pizza_base_id is None or cheese_id is None or not topping_ids:
@@ -118,6 +134,7 @@ def orderCreate(request):
         
         serializer = OrderSerializer(order)  # Serialize the created order
         update_order_status.delay(order.id, order.created_at)  # Start the task
+        return render(request, 'order_create.html', {'order': order})
         return Response({'message': 'Order created successfully', 'order': serializer.data}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
