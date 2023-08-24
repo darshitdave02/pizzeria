@@ -14,5 +14,5 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Run the custom entrypoint script
+    # Run the custom entrypoint script
 CMD ["python3", "entrypoint.py"]

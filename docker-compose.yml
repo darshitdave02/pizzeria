@@ -13,6 +13,12 @@ services:
       retries: 10
     ports:
       - 3306:3306
+  
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+  
 
   web:
     build:
@@ -23,6 +29,14 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m celery -A pizzeria worker  # Modify as needed
+    depends_on:
+      - redis
 
 volumes:
   mysql_data:
