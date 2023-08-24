@@ -1,0 +1,26 @@
+[
+  {
+    "model": "orderApis.pizzabase",
+    "pk": 1,
+    "fields": {
+      "name": "Thin Crust",
+      "price": 8.99
+    }
+  },
+  {
+    "model": "orderApis.pizzabase",
+    "pk": 2,
+    "fields": {
+      "name": "Normal",
+      "price": 7.99
+    }
+  },
+  {
+    "model": "orderApis.pizzabase",
+    "pk": 3,
+    "fields": {
+      "name": "Cheese Burst",
+      "price": 10.99
+    }
+  }
+]

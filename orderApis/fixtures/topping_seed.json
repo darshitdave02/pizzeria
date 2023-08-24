@@ -1,0 +1,58 @@
+[
+  {
+    "model": "orderApis.topping",
+    "pk": 1,
+    "fields": {
+      "name": "Pepperoni",
+      "price": 1.5
+    }
+  },
+  {
+    "model": "orderApis.topping",
+    "pk": 2,
+    "fields": {
+      "name": "Mushrooms",
+      "price": 1.0
+    }
+  },
+  {
+    "model": "orderApis.topping",
+    "pk": 3,
+    "fields": {
+      "name": "Onions",
+      "price": 0.75
+    }
+  },
+  {
+    "model": "orderApis.topping",
+    "pk": 4,
+    "fields": {
+      "name": "Peppers",
+      "price": 0.75
+    }
+  },
+  {
+    "model": "orderApis.topping",
+    "pk": 5,
+    "fields": {
+      "name": "Olives",
+      "price": 1.25
+    }
+  },
+  {
+    "model": "orderApis.topping",
+    "pk": 6,
+    "fields": {
+      "name": "Tomatoes",
+      "price": 0.5
+    }
+  },
+  {
+    "model": "orderApis.topping",
+    "pk": 7,
+    "fields": {
+      "name": "Bacon",
+      "price": 1.75
+    }
+  }
+]

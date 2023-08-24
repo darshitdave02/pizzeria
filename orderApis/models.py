@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 # Create a schema such that you’ll design a system for a pizzeria.
@@ -48,7 +49,7 @@ class Order(models.Model):
     toppings = models.ManyToManyField(Topping, null=False, blank=False)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Placed')
     price = models.FloatField(null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
         return f'Order: {self.id}'
@@ -56,7 +57,7 @@ class Order(models.Model):
 class OrderStatus(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False, blank=False)
     status = models.CharField(max_length=10, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
         return f'Order: {self.order.id} Status: {self.status}'
