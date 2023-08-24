@@ -4,10 +4,9 @@
     "pk": 1,
     "fields": {
       "status": "Placed",
-      "price": 12.99,
-      "cheese": 1,
-      "pizza_base": 1,
-      "toppings": [1, 2, 3, 4, 5]
+      "total_price": 30.97,
+      "created_at": "2023-08-25T10:00:00Z",
+      "pizzas": [1]
     }
   },
   {
@@ -15,10 +14,9 @@
     "pk": 2,
     "fields": {
       "status": "Accepted",
-      "price": 15.99,
-      "cheese": 2,
-      "pizza_base": 2,
-      "toppings": [1, 3, 5]
+      "total_price": 25.98,
+      "created_at": "2023-08-25T11:00:00Z",
+      "pizzas": [2]
     }
   },
   {
@@ -26,10 +24,9 @@
     "pk": 3,
     "fields": {
       "status": "Dispatched",
-      "price": 18.99,
-      "cheese": 3,
-      "pizza_base": 3,
-      "toppings": [2, 4]
+      "total_price": 22.97,
+      "created_at": "2023-08-25T12:00:00Z",
+      "pizzas": [3]
     }
   }
 ]
